@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+  <meta name="description" content="Algae Bloom: Webmap Dashboard">
+  <meta name="author" content="Benji Antolin">
+
+  <title>CWA Insights</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/MarkerCluster.css">
+  <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+  <link href="css/c3.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/leaflet.zoomhome.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+
+  <link rel="stylesheet" href="css/main0.css">
+
+  <script src="js/d3.js"></script>
+  <script src="js/c3.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+  <script src="js/chroma.min.js"></script>
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
+  <script src="https://rawgit.com/mapbox/mapbox-gl-leaflet/master/leaflet-mapbox-gl.js"></script>
+  <script src="https://unpkg.com/rbush@2.0.1/rbush.min.js"></script>
+  <script src="https://unpkg.com/labelgun@6.0.0/lib/labelgun.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+  <script src="js/leaflet.heat.js"></script>
+  <script src="js/leaflet.markercluster.js"></script>
+  <script src="js/leaflet.zoomhome.min.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
+  <script src="https://unpkg.com/@asymmetrik/leaflet-d3@4/dist/leaflet-d3.js" charset="utf-8"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <!-- <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button> -->
+
+          <h1 id="odsTitle" class="h3 mb-0 text-gray-600">
+            <img src="img\cwa.jpg" height="35">
+          </h1>
+
+          <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a> -->
+
+          <!-- Topbar Search -->
+          <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+            <div class="input-group">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                  <i class="fas fa-search fa-sm"></i>
+                </button>
+              </div>
+            </div>
+          </form> -->
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav">
+            <!-- Nav Item - Data Selection -->
+            <li class="nav-item ">
+              <a class="nav-link" href="#" role="button">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 medium">Insights:</span>
+                <span id="dataDropdown" class="dropdownTitle">City of Salem</span>
+              </a>
+            </li>
+            <div class="topbar-divider d-none d-sm-block"></div>
+          </ul>
+
+          <ul class="navbar-nav ml-auto">
+            <!-- Nav Item - Data Selection -->
+            <li class="nav-item ">
+              <a class="nav-link" href="#" role="button" data-toggle="modal" data-target="#awardModal">
+                <i class="fas fa-question-circle text-gray-600"></i>
+              </a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="#" role="button" data-toggle="modal" data-target="#awardModal">
+                <i class="fas fa-info-circle text-gray-600"></i>
+              </a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="https://www.clrwater.io/" target="_blank" role="button">
+                <img src="img\ClearwaterFinalLogo.png" height="35">
+              </a>
+            </li>
+            <!-- Nav Item - Data Selection -->
+
+          </ul>
+
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Content Row -->
+          <div class="row">
+            <!-- Content Column -->
+            <div class="col-lg-6 mb-2">
+              <div class="card text-white shadow">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Detroit Lake
+                  </h6>
+                </div>
+                <!-- Map -->
+                <div class="card shadow">
+                  <div class="card-body">
+                    <div class="map-area">
+                      <div id="map">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Content Column -->
+            <div class="col-lg-6 mb-2">
+              <div class="card text-white shadow">
+                <!-- Color System -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="stream-tab" data-bs-toggle="tab" href="#stream" data-bs-target="#stream" type="button" role="tab" aria-controls="stream" aria-selected="false">
+                      USGS Stream Gage
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="weather-tab" data-bs-toggle="tab" href="#weather" data-bs-target="#weather" type="button" role="tab" aria-controls="weather" aria-selected="true">
+                      Satellite reflectance
+                    </button>
+                  </li>
+
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="sample-tab" data-bs-toggle="tab" href="#sample" data-bs-target="#sample" type="button" role="tab" aria-controls="sample" aria-selected="false">
+                      Weather
+                    </button>
+                  </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show" id="weather" role="tabpanel" aria-labelledby="weather-tab">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="card shadow">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                              Sentinel Green
+                              <a data-toggle="modal" data-target="#awardModal">
+                                <i class="info fas fa-question-circle"></i>
+                              </a>
+                            </h6>
+                          </div>
+                          <div class="card-body">
+                              <div id="waterChart" class="chart-height"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade show active" id="stream" role="tabpanel" aria-labelledby="stream-tab">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="card shadow">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                              Water Temperature
+                              <a data-toggle="modal" data-target="#awardModal">
+                                <i class="info fas fa-question-circle"></i>
+                              </a>
+                            </h6>
+                          </div>
+                          <div class="card-body">
+                            <div class="chart-area">
+                              <div id="gageChart" class="chart-height yearColor"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="card shadow">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                              Chlorophyll fluorescence (fChl), water, in situ
+                              <a data-toggle="modal" data-target="#awardModal">
+                                <i class="info fas fa-question-circle"></i>
+                              </a>
+                            </h6>
+                          </div>
+                          <div class="card-body">
+                            <div class="chart-area">
+                              <div id="gagechChart" class="chart-height yearColor"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade show" id="sample" role="tabpanel" aria-labelledby="sample-tab">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="card shadow">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                              Air Temperature
+                              <a data-toggle="modal" data-target="#awardModal">
+                                <i class="info fas fa-question-circle"></i>
+                              </a>
+                            </h6>
+                          </div>
+                          <div class="card-body">
+                            <div id="weatherChart" class="chart-height yearColor"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Content Row -->
+        </div>
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <!-- <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Your Website 2020</span>
+          </div>
+        </div>
+      </footer> -->
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- NUMBER OF STUDENTS Modal-->
+  <div class="modal fade" id="stuParModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Number of Students Participating</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          The number of students
+          participating in outdoor school is count of the students
+          who participated in outdoor school (either at the time of
+          application (an estimate) or at the time of reporting
+          (the actual number who attended) in a given year or across
+          years in a given geography.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NUMBER OF STUDENTS Modal-->
+  <div class="modal fade" id="schoolParModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Number of Schools Participating</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Because the number of schools changes every year, this figure is a
+          simple count of the number of schools who applied for and received
+          outdoor school funding in a given school year.
+          .
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- $ Awarded Modal-->
+  <div class="modal fade" id="awardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Info</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+          in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SD participation Modal-->
+  <div class="modal fade" id="sDistrictModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Number of Districts (Participating)</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          At present, there are 197 school districts in the State of Oregon.
+          The Outdoor School program is permitted to fund school districts,
+          Education Service Districts (ESDs) (of which there are 19) and
+          state-sponsored charter schools (there are currently four).
+          While the total number of entities that could apply for outdoor
+          school funding is 220, we track only school districts
+          (even if an ESD applies for their funding) and state-sponsored
+          charter schools who apply for and receive funding from our program,
+          keeping our total number of potentially participating “districts”
+          at 201.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Funding per Student Modal-->
+  <div class="modal fade" id="fpsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Funding per Student</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Our unit of cost for outdoor school is “dollars per student”,
+          so when looking at an amount funded for outdoor school -
+          either an overall average, a threshold amount, or a per
+          specific program average - we express those amounts in dollars
+          per student as well.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Average Number of Days Modal-->
+  <div class="modal fade" id="avdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Average Number of Days</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          The average length of program is a calculation of the average
+          length (in days) of the outdoor school programs attended by
+          5th and/or 6th grade students in a given year (or across years).
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Number of Days Outside Modal-->
+  <div class="modal fade" id="dOutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Number of Days Outside</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          The number of days outside is the number of students
+          who participated multiplied by the number of days
+          in the outdoor school program they attended. So, for
+          a school that attended a 3-day 2-night program with
+          25 students, that school generated 75 days outside
+          for their students.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Program Length (Days & Nights) Modal-->
+  <div class="modal fade" id="plModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Program Length (Days & Nights)</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Comparison of program lengths used - For data visualization purposes,
+          we track (count) the frequency of attendance for each of the most
+          typical outdoor school programs (such as 3-day 0-night, 3-day 2-night,
+          4-day 3-night, 5-day 4-night, etc.) in a given year.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total Students Funded Modal-->
+  <div class="modal fade" id="tsfModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Students Funded</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Each year we have an actual count of students funded from each
+          district's final report. This number is the statewide running
+          total of each year’s annual number of students (5th and 6th grade)
+          receiving Outdoor School program funding for their outdoor school
+          experience.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total Amount Funded Modal-->
+  <div class="modal fade" id="tafModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Amount Funded</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          This is the running total of the annual dollars reimbursed to districts,
+          ESDs, and state-sponsored charter schools for the actual costs of their
+          outdoor school experiences. Because of the pandemic, this amount includes
+          (will include) non-refundable deposits and other district incurred costs
+          for outdoor school programs and facilities that had to be cancelled because
+          of state mandated COVID-19 restrictions in 2019-2020 and 2020-2021.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+
+
+  <script>
+    $(window).ready(function() {
+      $('.loader').fadeOut("slow");
+    });
+
+    // bounds of lake
+    var lakeBounds = L.latLngBounds(
+      L.latLng(44.626292, -122.376566), //Southwest
+      L.latLng(44.789755, -122.025402), //Northeast
+    );
+
+    var mymap = L.map('map', {
+      zoomControl: false,
+      zoom: 10,
+      maxZoom: 15,
+      minZoom: 10,
+    }).fitBounds(lakeBounds);
+
+    $(".leaflet-control-attribution").hide()
+
+    new L.Control.zoomHome({
+      position: 'topright'
+    }).addTo(mymap);
+
+
+    // 12. Add a scale bar
+    var voyager =
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png');
+    var satellite =
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
+    var natgeo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+      maxZoom: 16
+    });
+    var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    });
+    var USGS_USImagery = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 20,
+      attribution: 'Tiles courtesy of the <a href="https://usgs.gov/">U.S. Geological Survey</a>'
+    }).addTo(mymap);
+
+
+    var baseLayers = {
+      'CartoDB Voyager': voyager,
+      'ESRI Satellite': satellite,
+      'ESRI National Geographic': natgeo,
+      'Dark Mode': CartoDB_DarkMatter,
+      'USGS_USImagery': USGS_USImagery,
+    }
+
+    // Global Vars
+    var chart, marker;
+
+    // 6. Set function for color ramp
+    var colors = chroma.scale(['blue', 'red']).colors(4);
+    var color2 = chroma.scale(['blue', 'green', 'yellow', 'orange', 'red']).mode('lch').colors(5);
+
+    var legend = L.control({
+      position: 'bottomleft'
+    });
+
+    // 10. Function that runs when legend is added to map
+    legend.onAdd = function() {
+
+      // Create Div Element and Populate it with HTML
+      var div = L.DomUtil.create('div', 'legend');
+      div.innerHTML += '<img src="/img/cwaLegend.png">';
+      // Return the Legend div containing the HTML content
+      return div;
+    };
+    // 11. Add a legend to map
+    legend.addTo(mymap);
+
+    // Create the hexlayer
+    var hexLayer = L.hexbinLayer({
+        duration: 200,
+        radiusRange: [6, 12]
+      })
+      // .radiusValue(function (d) {
+      // 	var posts_sum = d.reduce(function (acc, obj) { return acc + obj["o"][3]; }, 0);
+      // 	return posts_sum
+      // })
+      .colorValue(function(d, i) {
+        var users_sum = d.reduce(function(acc, obj) {
+          return acc + obj["o"][3];
+        }, 0);
+        return users_sum
+      })
+      .hoverHandler(L.HexbinHoverHandler.compound({
+        handlers: [
+          L.HexbinHoverHandler.resizeFill(),
+          L.HexbinHoverHandler.tooltip()
+        ]
+      }));
+    hexLayer.colorScale().range(color2);
+    hexLayer.addTo(mymap);
+
+
+
+    Promise.all([
+      d3.csv('assets/sentinel2020.csv'), //datasets[0]
+      d3.csv('assets/usgs.csv'), //datasets[1]
+      d3.csv('assets/weather.csv'), //datasets[2]
+      d3.csv('assets/lake.csv'), //datasets[3]
+      d3.csv('assets/usgsData.csv'), //datasets[4]
+      d3.csv('assets/timeBands.csv'), //datasets[5]
+      d3.csv('assets/weatherS33.csv'), //datasets[6]
+      d3.csv('assets/weatherSLE.csv'), //datasets[7]
+      d3.json("assets/usgs.geojson"), //datasets[8]
+      d3.csv('assets/weatherData.csv'), //datasets[9]
+      d3.json("assets/weather.geojson"), //datasets[10]
+      d3.csv('assets/prism2020.csv'), //datasets[11]
+      d3.csv('assets/gagech.csv'), //datasets[12]
+
+    ]).then(function(datasets) {
+
+      $.fn.digits = function() {
+        return this.each(function() {
+          $(this).text($(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+        })
+      }
+      hexdata = [];
+      datasets[0].forEach(function(d) {
+        hexdata.push([
+          d.longitude,
+          d.latitude,
+          d.green,
+          d.nir,
+        ]);
+      })
+      // datasets[11].forEach(function(d) {
+      //   hexdata.push([
+      //     d.longitude,
+      //     d.latitude,
+      //     d.tmean,
+      //     // d.nir,
+      //   ]);
+      // })
+      hexLayer.data(hexdata);
+
+      addressPoints = hexdata.map(function (p) { return [p[0], p[1]]; });
+
+      var heat = L.heatLayer(addressPoints).addTo(mymap);
+      //
+      // // Add Weather Stations to map
+      // datasets[2].forEach(function(d) {
+      //   L.marker([d.lat, d.lon], {
+      //     icon: L.divIcon({
+      //       className: 'fas fa-temperature-high'
+      //     })
+      //   }).bindPopup(
+      //     "<b>" + d.station + "</b> <p>"
+      //   ).addTo(mymap);
+      // })
+      // datasets[3].forEach(function(d) {
+      //   L.marker([d.lat, d.lon], {
+      //     icon: L.divIcon({
+      //       className: 'fas fa-water'
+      //     })
+      //   }).bindPopup(
+      //     "<b>" + d.Lake + "</b> <p>"
+      //   ).addTo(insetmap);
+      // })
+
+      // load USGS Data
+      var t = ["t"];
+      var maxTemp = ["Max Temp"];
+      var meanTemp = ["Mean Temp"];
+      var minTemp = ["Min Temp"];
+
+
+      var site1 = {
+        name: "14178000",
+        x: maxTemp,
+        m: meanTemp,
+        n: minTemp,
+      }
+
+
+      function usgs1Counts(i) {
+        tx = 0, tm = 0, tn = 0;
+        datasets[4].forEach(function(d) {
+          var USTd = new Date(d["t"])
+          t.push(USTd.setHours(USTd.getHours() + 8));
+          tx = 0, tm = 0, tn = 0;
+          current = d;
+          delete current["t"];
+          if (i["name"] = "14178000") {
+            d = current[i["name"]];
+            if (d == undefined) {
+              d = "0"
+            };
+            items = d.split("-");
+            switch (items.length) {
+              case 3:
+                tn += +items[2];
+              case 2:
+                tm += +items[1];
+              case 1:
+                tx += +items[0];
+                break;
+            };
+          }
+          i["x"].push(tx);
+          i["m"].push(tm);
+          i["n"].push(tn);
+        });
+
+        // if (i["name"] == "14178000") {
+        //   $("#placename").text("USGS Station " + i["name"]);
+        // } else {
+        //   $("#placename").text("USGS Station " + i["name"]);
+        // }
+
+      }
+
+      function usgsCounts(i) {
+        tx = 0, tm = 0, tn = 0;
+        datasets[4].forEach(function(d) {
+          var USTd = new Date(d["t"])
+          t.push(USTd.setHours(USTd.getHours() + 8));
+          tx = 0, tm = 0, tn = 0;
+          current = d;
+          delete current["t"];
+          if (i["name"] != "14178000") {
+            d = current[i["name"]];
+            if (d == undefined) {
+              d = "0"
+            };
+            items = d.split("-");
+            switch (items.length) {
+              case 3:
+                tn += +items[2];
+              case 2:
+                tm += +items[1];
+              case 1:
+                tx += +items[0];
+                break;
+            };
+          } else {
+            Object.values(current).forEach(function(d) {
+              if (d == undefined) {
+                d = "0"
+              };
+              items = d.split("-");
+              switch (items.length) {
+                case 3:
+                  tn += +items[2];
+                case 2:
+                  tm += +items[1];
+                case 1:
+                  tx += +items[0];
+                  break;
+              };
+            });
+          }
+          i["x"].push(tx);
+          i["m"].push(tm);
+          i["n"].push(tn);
+        });
+
+        if (i["name"] == "14178000") {
+          $("#locDropdown").text(i["name"]);
+        } else {
+          $("#locDropdown").text(i["name"]);
+        }
+
+      }
+
+      // Load Band data
+      var tch = ["t"];
+      var chmax = ["Max (fChl)"];
+      var chmean = ["Mean (fChl)"];
+      var chmin = ["Min (fChl)"];
+
+      var ch = {
+        name: "14181500",
+        cx: chmax,
+        ca: chmean,
+        cn: chmin,
+      }
+
+      function chCounts(i) {
+        tcx = 0, tca = 0, tcn = 0;
+        datasets[12].forEach(function(d) {
+          var USTd = new Date(d["t"])
+          tch.push(USTd.setHours(USTd.getHours() + 8));
+          tcx = 0, tca = 0, tcn = 0;
+          current = d;
+          delete current["t"];
+          if (i["name"] = "14181500") {
+            d = current[i["name"]];
+            if (d == undefined) {
+              d = "0"
+            };
+            items = d.split("-");
+            switch (items.length) {
+              case 3:
+                tcn += +items[2];
+              case 2:
+                tca += +items[1];
+              case 1:
+                tcx += +items[0];
+                break;
+            };
+          }
+          i["cx"].push(tcx);
+          i["ca"].push(tca);
+          i["cn"].push(tcn);
+        });
+      }
+
+      // Load Band data
+      var tBand = ["t"];
+      var red = ["Red"];
+      var green = ["Green"];
+      var blue = ["Blue"];
+
+      var band = {
+        name: "band",
+        r: red,
+        g: green,
+        b: blue,
+      }
+
+      function bandCounts(i) {
+        tr = 0, tg = 0, tb = 0;
+        datasets[5].forEach(function(d) {
+          var USTd = new Date(d["t"])
+          tBand.push(USTd.setHours(USTd.getHours() + 8));
+          tr = 0, tg = 0, tb = 0;
+          current = d;
+          delete current["t"];
+          if (i["name"] = "band") {
+            d = current[i["name"]];
+            if (d == undefined) {
+              d = "0"
+            };
+            items = d.split("-");
+            switch (items.length) {
+              case 3:
+                tb += +items[2];
+              case 2:
+                tg += +items[1];
+              case 1:
+                tr += +items[0];
+                break;
+            };
+          }
+          i["r"].push(tr);
+          i["g"].push(tg);
+          i["b"].push(tb);
+        });
+      }
+
+      // load USGS Data
+      var tWeather = ["t"];
+      var maxAirTemp = ["Max Air Temp"];
+      var meanAirTemp = ["Mean Air Temp"];
+      var minAirTemp = ["Min Air Temp"];
+
+
+      var weather1 = {
+        name: "S33",
+        ax: maxAirTemp,
+        am: meanAirTemp,
+        an: minAirTemp,
+      }
+
+
+      function weather1Counts(i) {
+        tax = 0, tam = 0, tan = 0;
+        datasets[9].forEach(function(d) {
+          var USTd = new Date(d["t"])
+          tWeather.push(USTd.setHours(USTd.getHours() + 8));
+          tax = 0, tam = 0, tan = 0;
+          current = d;
+          delete current["t"];
+          if (i["name"] = "S33") {
+            d = current[i["name"]];
+            if (d == undefined) {
+              d = "0"
+            };
+            items = d.split("-");
+            switch (items.length) {
+              case 3:
+                tan += +items[2];
+              case 2:
+                tam += +items[1];
+              case 1:
+                tax += +items[0];
+                break;
+            };
+          }
+          i["ax"].push(tax);
+          i["am"].push(tam);
+          i["an"].push(tan);
+        });
+
+        // if (i["name"] == "14178000") {
+        //   $("#placename").text("USGS Station " + i["name"]);
+        // } else {
+        //   $("#placename").text("USGS Station " + i["name"]);
+        // }
+
+      }
+
+      function weatherCounts(i) {
+        tax = 0, tam = 0, tan = 0;
+        datasets[9].forEach(function(d) {
+          var USTd = new Date(d["t"])
+          tWeather.push(USTd.setHours(USTd.getHours() + 8));
+          tax = 0, tam = 0, tan = 0;
+          current = d;
+          delete current["t"];
+          if (i["name"] != "S33") {
+            d = current[i["name"]];
+            if (d == undefined) {
+              d = "0"
+            };
+            items = d.split("-");
+            switch (items.length) {
+              case 3:
+                tan += +items[2];
+              case 2:
+                tam += +items[1];
+              case 1:
+                tax += +items[0];
+                break;
+            };
+          } else {
+            Object.values(current).forEach(function(d) {
+              if (d == undefined) {
+                d = "0"
+              };
+              items = d.split("-");
+              switch (items.length) {
+                case 3:
+                  tan += +items[2];
+                case 2:
+                  tam += +items[1];
+                case 1:
+                  tax += +items[0];
+                  break;
+              };
+            });
+          }
+          i["ax"].push(tax);
+          i["am"].push(tam);
+          i["an"].push(tan);
+        });
+
+        if (i["name"] == "S33") {
+          $("#weatherVarDropdown").text(i["name"]);
+        } else {
+          $("#weatherVarDropdown").text(i["name"]);
+        }
+
+      }
+
+      function setColor(cases) {
+        if (cases >= 152) {
+          id = 5;
+        } else {
+          id = -1;
+          return "#00000000";
+        }
+        return colors[id];
+      }
+
+      function style(feature) {
+        return {
+          fillColor: setColor(feature.properties.usgs_site),
+          fillOpacity: 0.4,
+          weight: 1,
+          opacity: 1,
+          color: '#b4b4b4',
+          dashArray: '3'
+        };
+
+      }
+
+      function highlightFeature(e) {
+        // e indicates the current event
+        var layer = e.target; //the target capture the object which the event associates with
+        layer.setStyle({
+          weight: 4,
+          opacity: 0.8,
+          color: '#e3e3e3',
+          fillColor: '#00ffd9',
+          fillOpacity: 0.1
+        });
+        // bring the layer to the front.
+        layer.bringToFront();
+      }
+
+      // 3.2.2 zoom to the highlighted feature when the mouse is clicking onto it.
+      function zoomToFeature(e) {
+        // mymap.fitBounds(e.target.getBounds());
+        L.DomEvent.stopPropagation(e);
+        // $("#hint").text("Click here to for State trend.");
+
+
+        var t = ["t"];
+        var maxTemp = ["Max Temp"];
+        var meanTemp = ["Mean Temp"];
+        var minTemp = ["Min Temp"];
+        // var negTests = ["Negative Tests"];
+        var siteSelect = {
+          name: e.target.feature.properties.usgs_site,
+          x: maxTemp,
+          m: meanTemp,
+          n: minTemp,
+        }
+
+        usgsCounts(siteSelect);
+
+
+        chart1.load({
+          unload: true,
+          columns: [siteSelect.x, siteSelect.m, siteSelect.n],
+        });
+
+
+      }
+
+      // 3.2.3 reset the hightlighted feature when the mouse is out of its region.
+      function resetHighlight(e) {
+        sites.resetStyle(e.target);
+
+      }
+
+      // 3.3 add these event the layer obejct.
+      function onEachFeature(feature, layer) {
+        layer.on({
+            // mouseover: highlightFeature,
+            click: zoomToFeature,
+            // mouseout: resetHighlight
+          }),
+          layer.bindTooltip(feature.properties.site_name, {
+            className: 'feature-label',
+            permanent: false,
+            sticky: true,
+            direction: 'auto'
+          });
+      }
+
+
+      function zoomToWeatherFeature(e) {
+        // mymap.fitBounds(e.target.getBounds());
+        L.DomEvent.stopPropagation(e);
+        // $("#hint").text("Click here to for State trend.");
+
+
+        var tWeather = ["t"];
+        var maxAirTemp = ["Max Air Temp"];
+        var meanAirTemp = ["Mean Air Temp"];
+        var minAirTemp = ["Min Air Temp"];
+        // var negTests = ["Negative Tests"];
+        var stationSelect = {
+          name: e.target.feature.properties.station,
+          ax: maxAirTemp,
+          am: meanAirTemp,
+          an: minAirTemp,
+        }
+
+        weatherCounts(stationSelect);
+
+
+        chart3.load({
+          unload: true,
+          columns: [stationSelect.ax, stationSelect.am, stationSelect.an],
+        });
+
+
+      }
+
+      // 3.3 add these event the layer obejct.
+      function onEachWeatherFeature(feature, layer) {
+        layer.on({
+            // mouseover: highlightFeature,
+            click: zoomToWeatherFeature,
+            // mouseout: resetHighlight
+          }),
+          layer.bindTooltip(feature.properties.station, {
+            className: 'feature-label',
+            permanent: false,
+            sticky: true,
+            direction: 'auto'
+          });
+      }
+      var sites = new L.GeoJSON(datasets[8], {
+        style: style,
+        onEachFeature: onEachFeature,
+        // onEachFeature: function(feature, layer) {
+        //   layer.bindPopup('<b>Site Name: </b>' + feature.properties.usgs_site)
+        // },
+        pointToLayer: function(feature, latlng) {
+          return L.marker(latlng, {
+            icon: L.divIcon({
+              className: 'fas fa-vial blinking',
+            })
+          });
+        },
+      }).addTo(mymap);
+
+      var weatherStation = new L.GeoJSON(datasets[10], {
+        style: style,
+        onEachFeature: onEachWeatherFeature,
+        // onEachFeature: function(feature, layer) {
+        //   layer.bindPopup('<b>Site Name: </b>' + feature.properties.usgs_site)
+        // },
+        pointToLayer: function(feature, latlng) {
+          return L.marker(latlng, {
+            icon: L.divIcon({
+              className: 'fas fa-temperature-high'
+            })
+          });
+        },
+      }).addTo(mymap);
+
+      // mymap.fitBounds(county.getBounds());
+      new L.control.layers(baseLayers, {
+        // "Infection Level": areas,
+        // "Infection Case(s) &nbsp;&nbsp; <i class='fas fa-users community'></i>": cases,
+        // "Infected Community &nbsp;&nbsp; <i class='fas fa-procedures community'></i>": communities
+      }, {
+        collapsed: true
+      }).addTo(mymap);
+
+      usgs1Counts(site1);
+      bandCounts(band);
+      weather1Counts(weather1);
+chCounts(ch);
+      var chart1 = c3.generate({
+        data: {
+          x: "t",
+          columns: [t, site1.x, site1.m, site1.n],
+          type: 'spline',
+        },
+        padding: {
+          // bottom: 10,
+          top: 10
+        },
+        axis: {
+          x: {
+            type: "timeseries",
+            tick: {
+              format: "%b %d",
+              centered: true,
+              fit: true,
+              count: 20
+            }
+          },
+          y: {
+            label: {
+              text: 'degrees Celsius',
+              position: 'outer-middle'
+            },
+            min: 0,
+            padding: {
+              bottom: 0
+            },
+            type: 'linear',
+            tick: {
+              format: d3.format(".2s"),
+
+              count: 5,
+              // values: [0,5000,10000,15000]
+            }
+          }
+        },
+        point: {
+          r: 0,
+          focus: {
+            expand: {
+              r: 5
+            }
+          }
+        },
+        zoom: {
+          // rescale: true,+
+          enabled: true,
+          type: "scroll",
+          onzoom: function(d) {
+            chart2.zoom(chart1.zoom());
+            chart3.zoom(chart1.zoom());
+            // step();
+          }
+        },
+        bindto: "#gageChart"
+      });
+
+      var chartch = c3.generate({
+        data: {
+          x: "t",
+          columns: [t, ch.cx, ch.ca, ch.cn],
+          type: 'spline',
+        },
+        padding: {
+          // bottom: 10,
+          top: 10
+        },
+        axis: {
+          x: {
+            type: "timeseries",
+            tick: {
+              format: "%b %d",
+              centered: true,
+              fit: true,
+              count: 20
+            }
+          },
+          y: {
+            label: {
+              text: 'Chlorophyll fluorescence (fChl), water, in situ',
+              position: 'outer-middle'
+            },
+            min: 0,
+            padding: {
+              bottom: 0
+            },
+            type: 'linear',
+            tick: {
+              format: d3.format(".2s"),
+
+              count: 5,
+              // values: [0,5000,10000,15000]
+            }
+          }
+        },
+        point: {
+          r: 0,
+          focus: {
+            expand: {
+              r: 5
+            }
+          }
+        },
+        zoom: {
+          // rescale: true,+
+          enabled: true,
+          type: "scroll",
+          // onzoom: function(d) {
+          //   chart2.zoom(chart1.zoom());
+          //   chart3.zoom(chart1.zoom());
+          //   chart1.zoom(chart1.zoom());
+          //   // step();
+          // }
+        },
+        bindto: "#gagechChart"
+      });
+
+
+      var chart2 = c3.generate({
+        data: {
+          x: "t",
+          columns: [tBand, band.g],
+          type: 'spline',
+          colors: {
+            Red: 'red',
+            Green: 'green',
+            Blue: 'blue',
+          },
+        },
+        padding: {
+          // bottom: 10,
+          top: 10
+        },
+        axis: {
+          x: {
+            type: "timeseries",
+            tick: {
+              format: "%b %d",
+              centered: true,
+              fit: true,
+              count: 20
+            }
+          },
+          y: {
+            // label: {
+            //   text: 'degrees Celsius',
+            //   position: 'outer-middle'
+            // },
+            min: 0,
+            padding: {
+              bottom: 0
+            },
+            type: 'linear',
+            tick: {
+              format: d3.format(".2s"),
+
+              count: 5,
+              // values: [0,5000,10000,15000]
+            }
+          }
+        },
+        point: {
+          r: 0,
+          focus: {
+            expand: {
+              r: 5
+            }
+          }
+        },
+        zoom: {
+          // rescale: true,+
+          enabled: true,
+          type: "scroll",
+          // onzoom: function(d) {
+          //   chart1.zoom(chart2.zoom());
+          //   chart3.zoom(chart2.zoom());
+          //   // step();
+          // }
+        },
+        bindto: "#waterChart"
+      });
+
+      var chart3 = c3.generate({
+        data: {
+          x: "t",
+          columns: [tWeather, weather1.ax, weather1.am, weather1.an],
+          type: 'spline',
+        },
+        padding: {
+          // bottom: 10,
+          top: 10
+        },
+        axis: {
+          x: {
+            type: "timeseries",
+            tick: {
+              format: "%b %d",
+              centered: true,
+              fit: true,
+              count: 20
+            }
+          },
+          y: {
+            label: {
+              text: 'degrees F',
+              position: 'outer-middle'
+            },
+            min: 0,
+            padding: {
+              bottom: 0
+            },
+            type: 'linear',
+            tick: {
+              format: d3.format(".2s"),
+
+              count: 5,
+              // values: [0,5000,10000,15000]
+            }
+          }
+        },
+        point: {
+          r: 0,
+          focus: {
+            expand: {
+              r: 5
+            }
+          }
+        },
+        zoom: {
+          // rescale: true,+
+          enabled: true,
+          type: "scroll",
+          // onzoom: function(d) {
+          //   chart2.zoom(chart3.zoom());
+          //   chart1.zoom(chart3.zoom());
+          //   // step();
+          // }
+        },
+        bindto: "#weatherChart"
+      });
+
+    });
+
+
+    function step(start, end) {
+      start = new Date(start.toString());
+      end = new Date(end.toString());
+
+      chart.zoom([new Date(start.toString()), new Date(end.toString())]);
+      chart2.zoom([new Date(start.toString()), new Date(end.toString())]);
+
+
+      var ticks = [];
+      start = new Date(start.toString());
+      end = new Date(end.toString());
+
+      s = start.getTime();
+      e = end.getTime();
+      breaks = 5;
+      interval = Math.floor(e - s) / breaks
+      ticks = [];
+      for (var j = 0; j < breaks; j++) {
+        ticks.push(new Date(s + interval * j))
+      }
+      ticks.push(end);
+
+      chart.internal.config.axis_x_tick_values = ticks;
+      chart2.internal.config.axis_x_tick_values = ticks;
+
+
+      heatmap.setLatLngs([]);
+      markergroup.clearLayers();
+      heatmap.setOptions({
+        radius: 15,
+        blur: 20
+      });
+      compliants.features.forEach(function(d) {
+        if (new Date(d.properties.RequestDat) > new Date(start.toString()) && new Date(d.properties.RequestDat) < new Date(end.toString())) {
+
+          heatmap.addLatLng(new L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0]));
+          L.marker(new L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0]), {
+              icon: L.divIcon({
+                className: 'fas fa-exclamation-triangle fa-xs compliant'
+              })
+            })
+            .bindPopup('<b>Request date: </b>' + d.properties.Location + '<br> <b>Request location: </b>' + d.properties.RequestLoc + '<br> <b>Request status:</b> ' + d.properties.RequestSta +
+              '<br> <b>Comment: </b>' + d.properties.CommentFor)
+            .addTo(markergroup);
+
+        }
+      });
+
+
+
+
+
+      var startMonth, startDate, endDate, endMonth;
+      if (start.getMonth() + 1 < 10) {
+        startMonth = '0' + (start.getMonth() + 1)
+      } else {
+        startMonth = start.getMonth() + 1
+      };
+
+      if (end.getMonth() + 1 < 10) {
+        endMonth = '0' + (end.getMonth() + 1)
+      } else {
+        endMonth = end.getMonth() + 1
+      };
+
+      if (start.getDate() < 10) {
+        startDate = '0' + start.getDate()
+      } else {
+
+        startDate = start.getDate();
+      };
+
+      if (end.getDate() < 10) {
+        endDate = '0' + end.getDate()
+      } else {
+        endDate = end.getDate();
+      };
+
+      daterange = startMonth + "/" + startDate + "/" + start.getFullYear() + " - " + endMonth + "/" + endDate + "/" + end.getFullYear()
+      $("#daterange").val(daterange);
+
+    }
+
+
+    var triggerTabList = [].slice.call(document.querySelectorAll('#weather-tab'))
+    triggerTabList.forEach(function(triggerEl) {
+      var tabTrigger = new bootstrap.Tab(triggerEl)
+      triggerEl.addEventListener('click', function(event) {
+        event.preventDefault()
+        tabTrigger.show()
+
+      })
+    })
+    var triggerTabList = [].slice.call(document.querySelectorAll('#stream-tab'))
+    triggerTabList.forEach(function(triggerEl) {
+      var tabTrigger = new bootstrap.Tab(triggerEl)
+      triggerEl.addEventListener('click', function(event) {
+        event.preventDefault()
+        tabTrigger.show()
+
+      })
+    })
+    var triggerTabList = [].slice.call(document.querySelectorAll('#sample-tab'))
+    triggerTabList.forEach(function(triggerEl) {
+      var tabTrigger = new bootstrap.Tab(triggerEl)
+      triggerEl.addEventListener('click', function(event) {
+        event.preventDefault()
+        tabTrigger.show()
+      })
+    })
+  </script>
+
+</body>
+
+</html>
