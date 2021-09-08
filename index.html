@@ -156,19 +156,18 @@
                 <!-- Color System -->
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="stream-tab" data-bs-toggle="tab" href="#stream" data-bs-target="#stream" type="button" role="tab" aria-controls="stream" aria-selected="false">
-                      USGS Stream Gage
+                    <button class="nav-link" id="weather-tab" data-bs-toggle="tab" href="#weather" data-bs-target="#weather" type="button" role="tab" aria-controls="weather" aria-selected="true">
+                      Weather
                     </button>
                   </li>
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="weather-tab" data-bs-toggle="tab" href="#weather" data-bs-target="#weather" type="button" role="tab" aria-controls="weather" aria-selected="true">
-                      Satellite reflectance
+                    <button class="nav-link active" id="stream-tab" data-bs-toggle="tab" href="#stream" data-bs-target="#stream" type="button" role="tab" aria-controls="stream" aria-selected="false">
+                     Stream Gage
                     </button>
                   </li>
-
                   <li class="nav-item" role="presentation">
                     <button class="nav-link" id="sample-tab" data-bs-toggle="tab" href="#sample" data-bs-target="#sample" type="button" role="tab" aria-controls="sample" aria-selected="false">
-                      Weather
+                      Water Sample
                     </button>
                   </li>
                 </ul>
@@ -179,7 +178,7 @@
                         <div class="card shadow">
                           <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">
-                              Sentinel Green
+                              PRISM Data
                               <a data-toggle="modal" data-target="#awardModal">
                                 <i class="info fas fa-question-circle"></i>
                               </a>
@@ -198,7 +197,7 @@
                         <div class="card shadow">
                           <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">
-                              Water Temperature
+                              Water temperature (Degrees, Celsius)
                               <a data-toggle="modal" data-target="#awardModal">
                                 <i class="info fas fa-question-circle"></i>
                               </a>
@@ -217,7 +216,45 @@
                         <div class="card shadow">
                           <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">
-                              Chlorophyll fluorescence (fChl), water, in situ
+                              Barometric pressure (millimeters of mercury)
+                              <a data-toggle="modal" data-target="#awardModal">
+                                <i class="info fas fa-question-circle"></i>
+                              </a>
+                            </h6>
+                          </div>
+                          <div class="card-body">
+                            <div class="chart-area">
+                              <div id="gagechChart" class="chart-height yearColor"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="card shadow">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                              Phycocyanin fluorescence (fPC)
+                              <a data-toggle="modal" data-target="#awardModal">
+                                <i class="info fas fa-question-circle"></i>
+                              </a>
+                            </h6>
+                          </div>
+                          <div class="card-body">
+                            <div class="chart-area">
+                              <div id="gagechChart" class="chart-height yearColor"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="card shadow">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                              Chlorophyll
                               <a data-toggle="modal" data-target="#awardModal">
                                 <i class="info fas fa-question-circle"></i>
                               </a>
@@ -238,7 +275,41 @@
                         <div class="card shadow">
                           <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">
-                              Air Temperature
+                              Algae concentrations
+                              <a data-toggle="modal" data-target="#awardModal">
+                                <i class="info fas fa-question-circle"></i>
+                              </a>
+                            </h6>
+                          </div>
+                          <div class="card-body">
+                            <div id="weatherChart" class="chart-height yearColor"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="card shadow">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                              Toxin concentrations
+                              <a data-toggle="modal" data-target="#awardModal">
+                                <i class="info fas fa-question-circle"></i>
+                              </a>
+                            </h6>
+                          </div>
+                          <div class="card-body">
+                            <div id="weatherChart" class="chart-height yearColor"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="card shadow">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                              Nutrient concentrations
                               <a data-toggle="modal" data-target="#awardModal">
                                 <i class="info fas fa-question-circle"></i>
                               </a>
@@ -1423,88 +1494,7 @@ chCounts(ch);
     });
 
 
-    function step(start, end) {
-      start = new Date(start.toString());
-      end = new Date(end.toString());
 
-      chart.zoom([new Date(start.toString()), new Date(end.toString())]);
-      chart2.zoom([new Date(start.toString()), new Date(end.toString())]);
-
-
-      var ticks = [];
-      start = new Date(start.toString());
-      end = new Date(end.toString());
-
-      s = start.getTime();
-      e = end.getTime();
-      breaks = 5;
-      interval = Math.floor(e - s) / breaks
-      ticks = [];
-      for (var j = 0; j < breaks; j++) {
-        ticks.push(new Date(s + interval * j))
-      }
-      ticks.push(end);
-
-      chart.internal.config.axis_x_tick_values = ticks;
-      chart2.internal.config.axis_x_tick_values = ticks;
-
-
-      heatmap.setLatLngs([]);
-      markergroup.clearLayers();
-      heatmap.setOptions({
-        radius: 15,
-        blur: 20
-      });
-      compliants.features.forEach(function(d) {
-        if (new Date(d.properties.RequestDat) > new Date(start.toString()) && new Date(d.properties.RequestDat) < new Date(end.toString())) {
-
-          heatmap.addLatLng(new L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0]));
-          L.marker(new L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0]), {
-              icon: L.divIcon({
-                className: 'fas fa-exclamation-triangle fa-xs compliant'
-              })
-            })
-            .bindPopup('<b>Request date: </b>' + d.properties.Location + '<br> <b>Request location: </b>' + d.properties.RequestLoc + '<br> <b>Request status:</b> ' + d.properties.RequestSta +
-              '<br> <b>Comment: </b>' + d.properties.CommentFor)
-            .addTo(markergroup);
-
-        }
-      });
-
-
-
-
-
-      var startMonth, startDate, endDate, endMonth;
-      if (start.getMonth() + 1 < 10) {
-        startMonth = '0' + (start.getMonth() + 1)
-      } else {
-        startMonth = start.getMonth() + 1
-      };
-
-      if (end.getMonth() + 1 < 10) {
-        endMonth = '0' + (end.getMonth() + 1)
-      } else {
-        endMonth = end.getMonth() + 1
-      };
-
-      if (start.getDate() < 10) {
-        startDate = '0' + start.getDate()
-      } else {
-
-        startDate = start.getDate();
-      };
-
-      if (end.getDate() < 10) {
-        endDate = '0' + end.getDate()
-      } else {
-        endDate = end.getDate();
-      };
-
-      daterange = startMonth + "/" + startDate + "/" + start.getFullYear() + " - " + endMonth + "/" + endDate + "/" + end.getFullYear()
-      $("#daterange").val(daterange);
-
-    }
 
 
     var triggerTabList = [].slice.call(document.querySelectorAll('#weather-tab'))
