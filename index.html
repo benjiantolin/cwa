@@ -27,7 +27,7 @@
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 
   <link rel="stylesheet" href="css/main0.css">
-
+  <link rel="stylesheet" href="css/simplebar.css" />
   <script src="js/d3.js"></script>
   <script src="js/c3.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
@@ -43,6 +43,7 @@
   <script src="js/leaflet.heat.js"></script>
   <script src="js/leaflet.markercluster.js"></script>
   <script src="js/leaflet.zoomhome.min.js"></script>
+  <script src="js/simplebar.min.js"></script>
   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
   <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
   <script src="https://unpkg.com/@asymmetrik/leaflet-d3@4/dist/leaflet-d3.js" charset="utf-8"></script>
@@ -110,18 +111,16 @@
                 <i class="fas fa-question-circle text-gray-600"></i>
               </a>
             </li>
-            <li class="nav-item ">
+            <!-- <li class="nav-item ">
               <a class="nav-link" href="#" role="button" data-toggle="modal" data-target="#awardModal">
                 <i class="fas fa-info-circle text-gray-600"></i>
               </a>
-            </li>
-            <li class="nav-item ">
+            </li> -->
+            <!-- <li class="nav-item ">
               <a class="nav-link" href="https://www.clrwater.io/" target="_blank" role="button">
                 <img src="img\ClearwaterFinalLogo.png" height="35">
               </a>
-            </li>
-            <!-- Nav Item - Data Selection -->
-
+            </li> -->
           </ul>
 
         </nav>
@@ -129,7 +128,6 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-
           <!-- Content Row -->
           <div class="row">
             <!-- Content Column -->
@@ -162,7 +160,7 @@
                   </li>
                   <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="stream-tab" data-bs-toggle="tab" href="#stream" data-bs-target="#stream" type="button" role="tab" aria-controls="stream" aria-selected="false">
-                     Stream Gage
+                      USGS Stream Gage
                     </button>
                   </li>
                   <li class="nav-item" role="presentation">
@@ -178,14 +176,14 @@
                         <div class="card shadow">
                           <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">
-                              Daily Precipitation
+                              Daily precipitation
                               <a data-toggle="modal" data-target="#awardModal">
                                 <i class="info fas fa-question-circle"></i>
                               </a>
                             </h6>
                           </div>
                           <div class="card-body">
-                              <div id="waterChart" class="chart-height"></div>
+                            <div id="waterChart" class="chart-height"></div>
                           </div>
                         </div>
                       </div>
@@ -202,7 +200,7 @@
                             </h6>
                           </div>
                           <div class="card-body">
-                              <div id="airTempChart" class="chart-height"></div>
+                            <div id="airTempChart" class="chart-height"></div>
                           </div>
                         </div>
                       </div>
@@ -212,14 +210,14 @@
                         <div class="card shadow">
                           <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">
-                               Daily mean dew point temperature
+                              Daily mean dew point temperature
                               <a data-toggle="modal" data-target="#awardModal">
                                 <i class="info fas fa-question-circle"></i>
                               </a>
                             </h6>
                           </div>
                           <div class="card-body">
-                              <div id="dewTempChart" class="chart-height"></div>
+                            <div id="dewTempChart" class="chart-height"></div>
                           </div>
                         </div>
                       </div>
@@ -229,14 +227,28 @@
                     <div class="row">
                       <div class="col-lg-12">
                         <div class="card shadow">
-                          <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">
-                              Water temperature (Degrees, Celsius)
+                          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Water Temperature (Degrees, Celsius)
                               <a data-toggle="modal" data-target="#awardModal">
                                 <i class="info fas fa-question-circle"></i>
                               </a>
                             </h6>
+                            <div class="dropdown no-arrow">
+                              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Select USGS Loc:</span>
+                                <span id="gageDropdown" class="dropdownTitle">NORTH SANTIAM RIVER AT NIAGARA, OR</span>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                <center>
+                                  <a class="dropdown-item" id="14178000" value="1">NO SANTIAM R BLW BOULDER CRK, NR DETROIT, OR</a>
+                                  <a class="dropdown-item" id="14179000" value="2">BREITENBUSH R ABV FRENCH CR NR DETROIT, OR.</a>
+                                  <a class="dropdown-item" id="14180300" value="3">BLOWOUT CREEK NEAR DETROIT, OR</a>
+                                  <a class="dropdown-item" id="14181500" value="4">NORTH SANTIAM RIVER AT NIAGARA, OR</a>
+                                </center>
+                              </div>
+                            </div>
                           </div>
+
                           <div class="card-body">
                             <div class="chart-area">
                               <div id="gageChart" class="chart-height yearColor"></div>
@@ -307,13 +319,25 @@
                     <div class="row">
                       <div class="col-lg-12">
                         <div class="card shadow">
-                          <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">
-                              Algae concentrations
+                          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Algae concentrations
                               <a data-toggle="modal" data-target="#awardModal">
                                 <i class="info fas fa-question-circle"></i>
                               </a>
                             </h6>
+                            <div class="dropdown no-arrow">
+                              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Select Sample Loc:</span>
+                                <span id="sampleDropdown" class="dropdownTitle">Log Boom</span>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                <center>
+                                  <a class="dropdown-item" id="lb" value="1">Log Boom</a>
+                                  <a class="dropdown-item" id="ht" value="2">Heater Creek Arm</a>
+                                  <a class="dropdown-item" id="bo" value="3">Blowout Arm</a>
+                                </center>
+                              </div>
+                            </div>
                           </div>
                           <div class="card-body">
                             <div id="weatherChart" class="chart-height yearColor"></div>
@@ -748,7 +772,7 @@
 
 
     Promise.all([
-      d3.csv('assets/sentinel2020.csv'), //datasets[0]
+      d3.csv('assets/prismLayer.csv'), //datasets[0]
       d3.csv('assets/usgs.csv'), //datasets[1]
       d3.csv('assets/weather.csv'), //datasets[2]
       d3.csv('assets/lake.csv'), //datasets[3]
@@ -761,6 +785,10 @@
       d3.json("assets/weather.geojson"), //datasets[10]
       d3.csv('assets/prism2020.csv'), //datasets[11]
       d3.csv('assets/gagech.csv'), //datasets[12]
+      d3.csv('assets/usgsGages/gages2020.csv'), //datasets[13]
+      d3.csv('assets/waterSample/aAlgae.csv'), //datasets[14]
+      d3.csv('assets/waterSample/aNutrients.csv'), //datasets[15]
+      d3.csv('assets/waterSample/aToxins.csv'), //datasets[16]
 
     ]).then(function(datasets) {
 
@@ -769,13 +797,16 @@
           $(this).text($(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
         })
       }
+
+
       hexdata = [];
       datasets[0].forEach(function(d) {
         hexdata.push([
-          d.longitude,
-          d.latitude,
-          d.green,
-          d.nir,
+          d.lat_lon_Y,
+          d.lat_lon_X,
+          d.tmean,
+          d.tdmean,
+          d.ppt,
         ]);
       })
       // datasets[11].forEach(function(d) {
@@ -788,9 +819,23 @@
       // })
       hexLayer.data(hexdata);
 
-      addressPoints = hexdata.map(function (p) { return [p[0], p[1]]; });
+      prismPoints = hexdata.map(function(p) {
+        return [p[0], p[1], p[2]];
+      });
 
-      var heat = L.heatLayer(addressPoints).addTo(mymap);
+      var heat = L.heatLayer(prismPoints, {
+        max: 10,
+        radius: 8,
+        gradient: {
+          .1: 'blue',
+          .3: 'green',
+          .5: 'yellow',
+          .7: 'orange',
+          .9: 'red'
+        }
+      }).addTo(mymap);
+
+
       //
       // // Add Weather Stations to map
       // datasets[2].forEach(function(d) {
@@ -811,49 +856,268 @@
       //     "<b>" + d.Lake + "</b> <p>"
       //   ).addTo(insetmap);
       // })
+      // // load USGS Data
+      var aSampleT = ["t"];
+      var nSampleT = ["t"];
+      var tSampleT = ["t"];
+      var tbv = ["Cyanobacteria in total biovolume"];
+      var cylin = ["Cylindrospermopsin"];
+      var mcy = ["Microcystin"];
+      var tni = ["Total Nitrates "];
+      var tph = ["Total Phosphates"];
 
-      // load USGS Data
-      var t = ["t"];
-      var maxTemp = ["Max Temp"];
-      var meanTemp = ["Mean Temp"];
-      var minTemp = ["Min Temp"];
-
-
-      var site1 = {
-        name: "14178000",
-        x: maxTemp,
-        m: meanTemp,
-        n: minTemp,
+      var sampleSite1 = {
+        name: "LB",
+        b: tbv,
+        c: cylin,
+        m: mcy,
+        n: tni,
+        p: tph,
       }
-
-
-      function usgs1Counts(i) {
-        tx = 0, tm = 0, tn = 0;
-        datasets[4].forEach(function(d) {
+      //
+      // // mean temp, BP, fCHL, fPC
+      function sampleStartCounts(i) {
+        tb = 0, tc = 0, tm = 0, tn = 0, tp = 0;
+        // algae initial data load
+        datasets[14].forEach(function(d) {
           var USTd = new Date(d["t"])
-          t.push(USTd.setHours(USTd.getHours() + 8));
-          tx = 0, tm = 0, tn = 0;
+          aSampleT.push(USTd.setHours(USTd.getHours() + 8));
+          tb = 0;
           current = d;
           delete current["t"];
-          if (i["name"] = "14178000") {
+          if (i["name"] = "LB") {
             d = current[i["name"]];
             if (d == undefined) {
               d = "0"
             };
             items = d.split("-");
             switch (items.length) {
-              case 3:
-                tn += +items[2];
-              case 2:
-                tm += +items[1];
               case 1:
-                tx += +items[0];
+                tb += +items[0];
                 break;
             };
           }
-          i["x"].push(tx);
+          i["b"].push(tb);
+        });
+        datasets[15].forEach(function(d) {
+          var USTd = new Date(d["t"])
+          nSampleT.push(USTd.setHours(USTd.getHours() + 8));
+          tc = 0, tm = 0;
+          current = d;
+          delete current["t"];
+          if (i["name"] = "LB") {
+            d = current[i["name"]];
+            if (d == undefined) {
+              d = "0"
+            };
+            items = d.split("-");
+            switch (items.length) {
+              case 2:
+                tm += +items[1];
+              case 1:
+                tc += +items[0];
+                break;
+            };
+          }
+          i["c"].push(tc);
           i["m"].push(tm);
+        });
+        datasets[16].forEach(function(d) {
+          var USTd = new Date(d["t"])
+          tSampleT.push(USTd.setHours(USTd.getHours() + 8));
+          tn = 0, tp = 0;
+          current = d;
+          delete current["t"];
+          if (i["name"] = "LB") {
+            d = current[i["name"]];
+            if (d == undefined) {
+              d = "0"
+            };
+            items = d.split("-");
+            switch (items.length) {
+              case 2:
+                tp += +items[1];
+              case 1:
+                tn += +items[0];
+                break;
+            };
+          }
           i["n"].push(tn);
+          i["p"].push(tp);
+        });
+
+        // if (i["name"] == "14178000") {
+        //   $("#placename").text("USGS Station " + i["name"]);
+        // } else {
+        //   $("#placename").text("USGS Station " + i["name"]);
+        // }
+
+      }
+
+      function sampleCounts(i) {
+        tb = 0, tc = 0, tm = 0, tn = 0, tp = 0;
+        datasets[14].forEach(function(d) {
+          var USTd = new Date(d["t"])
+          aSampleT.push(USTd.setHours(USTd.getHours() + 8));
+          tb = 0;
+          current = d;
+          delete current["t"];
+          if (i["name"] != "") {
+            d = current[i["name"]];
+            if (d == undefined) {
+              d = "0"
+            };
+            items = d.split("-");
+            switch (items.length) {
+              case 1:
+                tb += +items[0];
+                break;
+            };
+          } else {
+            Object.values(current).forEach(function(d) {
+              if (d == undefined) {
+                d = "0"
+              };
+              items = d.split("-");
+              switch (items.length) {
+                case 1:
+                  tb += +items[0];
+                  break;
+              };
+            });
+          }
+          i["b"].push(tb);
+        });
+
+        datasets[15].forEach(function(d) {
+          var USTd = new Date(d["t"])
+          nSampleT.push(USTd.setHours(USTd.getHours() + 8));
+          tc = 0, tm = 0;
+          current = d;
+          delete current["t"];
+          if (i["name"] = "LB") {
+            d = current[i["name"]];
+            if (d == undefined) {
+              d = "0"
+            };
+            items = d.split("-");
+            switch (items.length) {
+              case 2:
+                tm += +items[1];
+              case 1:
+                tc += +items[0];
+                break;
+            };
+          } else {
+            Object.values(current).forEach(function(d) {
+              if (d == undefined) {
+                d = "0"
+              };
+              items = d.split("-");
+              switch (items.length) {
+                case 2:
+                  tm += +items[1];
+                case 1:
+                  tc += +items[0];
+                  break;
+              };
+            });
+          }
+          i["c"].push(tc);
+          i["m"].push(tm);
+        });
+
+        datasets[16].forEach(function(d) {
+          var USTd = new Date(d["t"])
+          tSampleT.push(USTd.setHours(USTd.getHours() + 8));
+          tn = 0, tp = 0;
+          current = d;
+          delete current["t"];
+          if (i["name"] = "LB") {
+            d = current[i["name"]];
+            if (d == undefined) {
+              d = "0"
+            };
+            items = d.split("-");
+            switch (items.length) {
+              case 2:
+                tp += +items[1];
+              case 1:
+                tn += +items[0];
+                break;
+            };
+          } else {
+            Object.values(current).forEach(function(d) {
+              if (d == undefined) {
+                d = "0"
+              };
+              items = d.split("-");
+              switch (items.length) {
+                case 2:
+                  tp += +items[1];
+                case 1:
+                  tn += +items[0];
+                  break;
+              };
+            });
+          }
+          i["n"].push(tn);
+          i["p"].push(tp);
+        });
+
+        // if (i["name"] == "14178000") {
+        //   $("#locDropdown").text(i["name"]);
+        // } else {
+        //   $("#locDropdown").text(i["name"]);
+        // }
+      }
+
+      // load USGS Data
+      var t = ["t"];
+      var meanTemp = ["Mean Water Temp"];
+      var meanbp = ["Mean Barometric pressure"];
+      var meanfchl = ["Mean fChl, water, in situ"];
+      var meanfpc = ["Mean fPC, water, in situ"];
+
+      var site1 = {
+        name: "14181500",
+        m: meanTemp,
+        b: meanbp,
+        f: meanfchl,
+        p: meanfpc,
+      }
+
+      // mean temp, BP, fCHL, fPC
+      function usgs1Counts(i) {
+        tm = 0, tb = 0, tf = 0, tp = 0;
+        datasets[13].forEach(function(d) {
+          var USTd = new Date(d["t"])
+          t.push(USTd.setHours(USTd.getHours() + 8));
+          tm = 0, tb = 0, tf = 0, tp = 0;
+          current = d;
+          delete current["t"];
+          if (i["name"] = "14181500") {
+            d = current[i["name"]];
+            if (d == undefined) {
+              d = "0"
+            };
+            items = d.split("-");
+            switch (items.length) {
+              case 4:
+                tp += +items[3];
+              case 3:
+                tf += +items[2];
+              case 2:
+                tb += +items[1];
+              case 1:
+                tm += +items[0];
+                break;
+            };
+          }
+          i["m"].push(tm);
+          i["b"].push(tb);
+          i["f"].push(tf);
+          i["p"].push(tp);
         });
 
         // if (i["name"] == "14178000") {
@@ -865,26 +1129,28 @@
       }
 
       function usgsCounts(i) {
-        tx = 0, tm = 0, tn = 0;
-        datasets[4].forEach(function(d) {
+        tm = 0, tb = 0, tf = 0, tp = 0;
+        datasets[13].forEach(function(d) {
           var USTd = new Date(d["t"])
           t.push(USTd.setHours(USTd.getHours() + 8));
-          tx = 0, tm = 0, tn = 0;
+          tm = 0, tb = 0, tf = 0, tp = 0;
           current = d;
           delete current["t"];
-          if (i["name"] != "14178000") {
+          if (i["name"] != "") {
             d = current[i["name"]];
             if (d == undefined) {
               d = "0"
             };
             items = d.split("-");
             switch (items.length) {
+              case 4:
+                tp += +items[3];
               case 3:
-                tn += +items[2];
+                tf += +items[2];
               case 2:
-                tm += +items[1];
+                tb += +items[1];
               case 1:
-                tx += +items[0];
+                tm += +items[0];
                 break;
             };
           } else {
@@ -894,26 +1160,29 @@
               };
               items = d.split("-");
               switch (items.length) {
+                case 4:
+                  tp += +items[3];
                 case 3:
-                  tn += +items[2];
+                  tf += +items[2];
                 case 2:
-                  tm += +items[1];
+                  tb += +items[1];
                 case 1:
-                  tx += +items[0];
+                  tm += +items[0];
                   break;
               };
             });
           }
-          i["x"].push(tx);
           i["m"].push(tm);
-          i["n"].push(tn);
+          i["b"].push(tb);
+          i["f"].push(tf);
+          i["p"].push(tp);
         });
 
-        if (i["name"] == "14178000") {
-          $("#locDropdown").text(i["name"]);
-        } else {
-          $("#locDropdown").text(i["name"]);
-        }
+        // if (i["name"] == "14178000") {
+        //   $("#locDropdown").text(i["name"]);
+        // } else {
+        //   $("#locDropdown").text(i["name"]);
+        // }
 
       }
 
@@ -1152,26 +1421,28 @@
 
 
         var t = ["t"];
-        var maxTemp = ["Max Temp"];
-        var meanTemp = ["Mean Temp"];
-        var minTemp = ["Min Temp"];
+        var meanTemp = ["Mean Water Temp"];
+        var meanbp = ["Mean Barometric pressure"];
+        var meanfchl = ["Mean fChl, water, in situ"];
+        var meanfpc = ["Mean fPC, water, in situ"];
         // var negTests = ["Negative Tests"];
         var siteSelect = {
           name: e.target.feature.properties.usgs_site,
-          x: maxTemp,
           m: meanTemp,
-          n: minTemp,
+          b: meanbp,
+          f: meanfchl,
+          p: meanfpc,
         }
 
         usgsCounts(siteSelect);
 
 
-        chart1.load({
+        gagechart.load({
           unload: true,
-          columns: [siteSelect.x, siteSelect.m, siteSelect.n],
+          columns: [siteSelect.m],
         });
 
-
+    $("#gageDropdown").text(e.target.feature.properties.site_name);
       }
 
       // 3.2.3 reset the hightlighted feature when the mouse is out of its region.
@@ -1221,6 +1492,7 @@
           unload: true,
           columns: [stationSelect.ax, stationSelect.am, stationSelect.an],
         });
+
 
 
       }
@@ -1281,12 +1553,17 @@
       usgs1Counts(site1);
       bandCounts(band);
       weather1Counts(weather1);
-chCounts(ch);
-      var chart1 = c3.generate({
+      chCounts(ch);
+      sampleStartCounts(sampleSite1);
+
+      // Build Charts
+
+      // USGS charts
+      var gagechart = c3.generate({
         data: {
           x: "t",
-          columns: [t, site1.x, site1.m, site1.n],
-          type: 'spline',
+          columns: [t, site1.m],
+          type: 'line',
         },
         padding: {
           // bottom: 10,
@@ -1304,7 +1581,7 @@ chCounts(ch);
           },
           y: {
             label: {
-              text: 'degrees Celsius',
+              text: 'Water temperature (Degrees, Celsius) ',
               position: 'outer-middle'
             },
             min: 0,
@@ -1324,7 +1601,7 @@ chCounts(ch);
           r: 0,
           focus: {
             expand: {
-              r: 5
+              r: 10
             }
           }
         },
@@ -1340,11 +1617,10 @@ chCounts(ch);
         },
         bindto: "#gageChart"
       });
-
-      var chartch = c3.generate({
+      var bpChart = c3.generate({
         data: {
           x: "t",
-          columns: [t, ch.cx, ch.ca, ch.cn],
+          columns: [t, site1.b],
           type: 'spline',
         },
         padding: {
@@ -1363,7 +1639,7 @@ chCounts(ch);
           },
           y: {
             label: {
-              text: 'Chlorophyll fluorescence (fChl), water, in situ',
+              text: 'Barometric pressure (millimeters of mercury) ',
               position: 'outer-middle'
             },
             min: 0,
@@ -1375,7 +1651,7 @@ chCounts(ch);
               format: d3.format(".2s"),
 
               count: 5,
-              // values: [0,5000,10000,15000]
+              // values: [600,700,800]
             }
           }
         },
@@ -1383,7 +1659,7 @@ chCounts(ch);
           r: 0,
           focus: {
             expand: {
-              r: 5
+              r: 10
             }
           }
         },
@@ -1400,8 +1676,298 @@ chCounts(ch);
         },
         bindto: "#gagechChart"
       });
+      var fpcChart = c3.generate({
+        data: {
+          x: "t",
+          columns: [t, site1.p],
+          type: 'spline',
+        },
+        padding: {
+          // bottom: 10,
+          top: 10
+        },
+        axis: {
+          x: {
+            type: "timeseries",
+            tick: {
+              format: "%b %d",
+              centered: true,
+              fit: true,
+              count: 20
+            }
+          },
+          y: {
+            label: {
+              text: 'Phycocyanin fluorescence (fPC) ',
+              position: 'outer-middle'
+            },
+            min: 0,
+            padding: {
+              bottom: 0
+            },
+            type: 'linear',
+            tick: {
+              format: d3.format(".2s"),
+              count: 5,
+            }
+          }
+        },
+        point: {
+          r: 0,
+          focus: {
+            expand: {
+              r: 10
+            }
+          }
+        },
+        zoom: {
+          // rescale: true,+
+          enabled: true,
+          type: "scroll",
+          // onzoom: function(d) {
+          //   chart2.zoom(chart1.zoom());
+          //   chart3.zoom(chart1.zoom());
+          //   chart1.zoom(chart1.zoom());
+          //   // step();
+          // }
+        },
+        bindto: "#fpcChart"
+      });
+      var fchlChart = c3.generate({
+        data: {
+          x: "t",
+          columns: [t, site1.f],
+          type: 'spline',
+        },
+        padding: {
+          // bottom: 10,
+          top: 10
+        },
+        axis: {
+          x: {
+            type: "timeseries",
+            tick: {
+              format: "%b %d",
+              centered: true,
+              fit: true,
+              count: 20
+            }
+          },
+          y: {
+            label: {
+              text: 'Phycocyanin fluorescence (fPC) ',
+              position: 'outer-middle'
+            },
+            min: 0,
+            padding: {
+              bottom: 0
+            },
+            type: 'linear',
+            tick: {
+              format: d3.format(".2s"),
+              count: 5,
+            }
+          }
+        },
+        point: {
+          r: 0,
+          focus: {
+            expand: {
+              r: 10
+            }
+          }
+        },
+        zoom: {
+          // rescale: true,+
+          enabled: true,
+          type: "scroll",
+          // onzoom: function(d) {
+          //   chart2.zoom(chart1.zoom());
+          //   chart3.zoom(chart1.zoom());
+          //   chart1.zoom(chart1.zoom());
+          //   // step();
+          // }
+        },
+        bindto: "#chlChart"
+      });
 
+      // Water Sample Charts
+      var algaeChart = c3.generate({
+        data: {
+          x: "t",
+          columns: [aSampleT, sampleSite1.b],
+          type: 'scatter',
+        },
+        padding: {
+          // bottom: 10,
+          top: 10
+        },
+        axis: {
+          x: {
+            type: "timeseries",
+            tick: {
+              format: "%b %d",
+              centered: true,
+              fit: true,
+              count: 20
+            }
+          },
+          y: {
+            // label: {
+            //   text: 'degrees F',
+            //   position: 'outer-middle'
+            // },
+            min: 0,
+            padding: {
+              bottom: 0
+            },
+            type: 'linear',
+            tick: {
+              format: d3.format(".2s"),
 
+              count: 5,
+              // values: [0,5000,10000,15000]
+            }
+          }
+        },
+        point: {
+          r: 5,
+          focus: {
+            expand: {
+              r: 10
+            }
+          }
+        },
+        zoom: {
+          // rescale: true,+
+          enabled: true,
+          type: "scroll",
+          // onzoom: function(d) {
+          //   chart2.zoom(chart3.zoom());
+          //   chart1.zoom(chart3.zoom());
+          //   // step();
+          // }
+        },
+        bindto: "#weatherChart"
+      });
+      var toxinChart = c3.generate({
+        data: {
+          x: "t",
+          columns: [aSampleT, sampleSite1.c, sampleSite1.m],
+          type: 'scatter',
+        },
+        padding: {
+          // bottom: 10,
+          top: 10
+        },
+        axis: {
+          x: {
+            type: "timeseries",
+            tick: {
+              format: "%b %d",
+              centered: true,
+              fit: true,
+              count: 20
+            }
+          },
+          y: {
+            // label: {
+            //   text: 'degrees F',
+            //   position: 'outer-middle'
+            // },
+            min: 0,
+            padding: {
+              bottom: 0
+            },
+            type: 'linear',
+            tick: {
+              format: d3.format(".2s"),
+
+              count: 5,
+              // values: [0,5000,10000,15000]
+            }
+          }
+        },
+        point: {
+          r: 5,
+          focus: {
+            expand: {
+              r: 10
+            }
+          }
+        },
+        zoom: {
+          // rescale: true,+
+          enabled: true,
+          type: "scroll",
+          // onzoom: function(d) {
+          //   chart2.zoom(chart3.zoom());
+          //   chart1.zoom(chart3.zoom());
+          //   // step();
+          // }
+        },
+        bindto: "#toxinChart"
+      });
+      var nutChart = c3.generate({
+        data: {
+          x: "t",
+          columns: [aSampleT, sampleSite1.n, sampleSite1.p],
+          type: 'scatter',
+        },
+        padding: {
+          // bottom: 10,
+          top: 10
+        },
+        axis: {
+          x: {
+            type: "timeseries",
+            tick: {
+              format: "%b %d",
+              centered: true,
+              fit: true,
+              count: 20
+            }
+          },
+          y: {
+            // label: {
+            //   text: 'degrees F',
+            //   position: 'outer-middle'
+            // },
+            min: 0,
+            padding: {
+              bottom: 0
+            },
+            type: 'linear',
+            tick: {
+              format: d3.format(".2s"),
+
+              count: 5,
+              // values: [0,5000,10000,15000]
+            }
+          }
+        },
+        point: {
+          r: 5,
+          focus: {
+            expand: {
+              r: 10
+            }
+          }
+        },
+        zoom: {
+          // rescale: true,+
+          enabled: true,
+          type: "scroll",
+          // onzoom: function(d) {
+          //   chart2.zoom(chart3.zoom());
+          //   chart1.zoom(chart3.zoom());
+          //   // step();
+          // }
+        },
+        bindto: "#nutChart"
+      });
+
+      // Weather Prism Charts
       var chart2 = c3.generate({
         data: {
           x: "t",
@@ -1449,7 +2015,7 @@ chCounts(ch);
           r: 0,
           focus: {
             expand: {
-              r: 5
+              r: 10
             }
           }
         },
@@ -1465,198 +2031,243 @@ chCounts(ch);
         },
         bindto: "#waterChart"
       });
-
-      var chart3 = c3.generate({
+      var dewChart = c3.generate({
         data: {
-          x: "t",
-          columns: [tWeather, weather1.ax, weather1.am, weather1.an],
-          type: 'spline',
-        },
-        padding: {
-          // bottom: 10,
-          top: 10
+          x: 'x',
+          //        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
+          columns: [
+            ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
+            //            ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
+            ['data1', 30, 200, 100, 400, 150, 250],
+            ['data2', 130, 340, 200, 500, 250, 350]
+          ]
         },
         axis: {
           x: {
-            type: "timeseries",
+            type: 'timeseries',
             tick: {
-              format: "%b %d",
-              centered: true,
-              fit: true,
-              count: 20
-            }
-          },
-          y: {
-            label: {
-              text: 'degrees F',
-              position: 'outer-middle'
-            },
-            min: 0,
-            padding: {
-              bottom: 0
-            },
-            type: 'linear',
-            tick: {
-              format: d3.format(".2s"),
-
-              count: 5,
-              // values: [0,5000,10000,15000]
+              format: '%Y-%m-%d'
             }
           }
         },
-        point: {
-          r: 0,
-          focus: {
-            expand: {
-              r: 5
+        bindto: "#dewTempChart"
+      });
+      var airTChart = c3.generate({
+        data: {
+          x: 'x',
+          //        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
+          columns: [
+            ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
+            //            ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
+            ['data1', 30, 200, 100, 400, 150, 250],
+            ['data2', 130, 340, 200, 500, 250, 350]
+          ]
+        },
+        axis: {
+          x: {
+            type: 'timeseries',
+            tick: {
+              format: '%Y-%m-%d'
             }
           }
         },
-        zoom: {
-          // rescale: true,+
-          enabled: true,
-          type: "scroll",
-          // onzoom: function(d) {
-          //   chart2.zoom(chart3.zoom());
-          //   chart1.zoom(chart3.zoom());
-          //   // step();
-          // }
-        },
-        bindto: "#weatherChart"
+        bindto: "#airTempChart"
+      });
+
+      $("#ht").on("click", function() {
+        $("#sampleDropdown").text("Heater Creek Arm");
+        var aSampleT = ["t"];
+        var nSampleT = ["t"];
+        var tSampleT = ["t"];
+        var tbv = ["Cyanobacteria in total biovolume"];
+        var cylin = ["Cylindrospermopsin"];
+        var mcy = ["Microcystin"];
+        var tni = ["Total Nitrates "];
+        var tph = ["Total Phosphates"];
+        var sampleSite = {
+          name: "HT",
+          b: tbv,
+          c: cylin,
+          m: mcy,
+          n: tni,
+          p: tph,
+        }
+        sampleCounts(sampleSite);
+        algaeChart.load({
+          unload: true,
+          columns: [sampleSite.b],
+        });
+        toxinChart.load({
+          unload: true,
+          columns: [sampleSite.c, sampleSite.m],
+        });
+        nutChart.load({
+          unload: true,
+          columns: [sampleSite.n, sampleSite.p],
+        });
+      });
+
+      $("#lb").on("click", function() {
+        $("#sampleDropdown").text("Log Boom");
+        var aSampleT = ["t"];
+        var nSampleT = ["t"];
+        var tSampleT = ["t"];
+        var tbv = ["Cyanobacteria in total biovolume"];
+        var cylin = ["Cylindrospermopsin"];
+        var mcy = ["Microcystin"];
+        var tni = ["Total Nitrates "];
+        var tph = ["Total Phosphates"];
+        var sampleSite = {
+          name: "LB",
+          b: tbv,
+          c: cylin,
+          m: mcy,
+          n: tni,
+          p: tph,
+        }
+        sampleCounts(sampleSite);
+        algaeChart.load({
+          unload: true,
+          columns: [sampleSite.b],
+        });
+        toxinChart.load({
+          unload: true,
+          columns: [sampleSite.c, sampleSite.m],
+        });
+        nutChart.load({
+          unload: true,
+          columns: [sampleSite.n, sampleSite.p],
+        });
+      });
+
+      $("#bo").on("click", function() {
+        $("#sampleDropdown").text("Blowout Arm");
+        var aSampleT = ["t"];
+        var nSampleT = ["t"];
+        var tSampleT = ["t"];
+        var tbv = ["Cyanobacteria in total biovolume"];
+        var cylin = ["Cylindrospermopsin"];
+        var mcy = ["Microcystin"];
+        var tni = ["Total Nitrates "];
+        var tph = ["Total Phosphates"];
+        var sampleSite = {
+          name: "BO",
+          b: tbv,
+          c: cylin,
+          m: mcy,
+          n: tni,
+          p: tph,
+        }
+        sampleCounts(sampleSite);
+        algaeChart.load({
+          unload: true,
+          columns: [sampleSite.b],
+        });
+        toxinChart.load({
+          unload: true,
+          columns: [sampleSite.c, sampleSite.m],
+        });
+        nutChart.load({
+          unload: true,
+          columns: [sampleSite.n, sampleSite.p],
+        });
+      });
+
+      $("#14179000").on("click", function() {
+        $("#gageDropdown").text("BREITENBUSH R ABV FRENCH CR NR DETROIT, OR");
+
+        var t = ["t"];
+        var meanTemp = ["Mean Water Temp"];
+        var meanbp = ["Mean Barometric pressure"];
+        var meanfchl = ["Mean fChl, water, in situ"];
+        var meanfpc = ["Mean fPC, water, in situ"];
+        // var negTests = ["Negative Tests"];
+        var siteSelect = {
+          name: "14178000",
+          m: meanTemp,
+          b: meanbp,
+          f: meanfchl,
+          p: meanfpc,
+        }
+        usgsCounts(siteSelect);
+        gagechart.load({
+          unload: true,
+          columns: [siteSelect.m],
+        });
+      });
+
+      $("#14178000").on("click", function() {
+        $("#gageDropdown").text("NO SANTIAM R BLW BOULDER CRK, NR DETROIT, OR");
+
+        var t = ["t"];
+        var meanTemp = ["Mean Water Temp"];
+        var meanbp = ["Mean Barometric pressure"];
+        var meanfchl = ["Mean fChl, water, in situ"];
+        var meanfpc = ["Mean fPC, water, in situ"];
+        // var negTests = ["Negative Tests"];
+        var siteSelect = {
+          name: "14178000",
+          m: meanTemp,
+          b: meanbp,
+          f: meanfchl,
+          p: meanfpc,
+        }
+        usgsCounts(siteSelect);
+        gagechart.load({
+          unload: true,
+          columns: [siteSelect.m],
+        });
+      });
+
+      $("#14180300").on("click", function() {
+        $("#gageDropdown").text("BLOWOUT CREEK NEAR DETROIT, OR");
+
+        var t = ["t"];
+        var meanTemp = ["Mean Water Temp"];
+        var meanbp = ["Mean Barometric pressure"];
+        var meanfchl = ["Mean fChl, water, in situ"];
+        var meanfpc = ["Mean fPC, water, in situ"];
+        // var negTests = ["Negative Tests"];
+        var siteSelect = {
+          name: "14178000",
+          m: meanTemp,
+          b: meanbp,
+          f: meanfchl,
+          p: meanfpc,
+        }
+        usgsCounts(siteSelect);
+        gagechart.load({
+          unload: true,
+          columns: [siteSelect.m],
+        });
+      });
+
+      $("#14181500").on("click", function() {
+        $("#gageDropdown").text("NORTH SANTIAM RIVER AT NIAGARA, OR");
+
+        var t = ["t"];
+        var meanTemp = ["Mean Water Temp"];
+        var meanbp = ["Mean Barometric pressure"];
+        var meanfchl = ["Mean fChl, water, in situ"];
+        var meanfpc = ["Mean fPC, water, in situ"];
+        // var negTests = ["Negative Tests"];
+        var siteSelect = {
+          name: "14178000",
+          m: meanTemp,
+          b: meanbp,
+          f: meanfchl,
+          p: meanfpc,
+        }
+        usgsCounts(siteSelect);
+        gagechart.load({
+          unload: true,
+          columns: [siteSelect.m],
+        });
       });
 
 
 
-      var chart = c3.generate({
-          data: {
-              x: 'x',
-      //        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
-              columns: [
-                  ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
-      //            ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
-                  ['data1', 30, 200, 100, 400, 150, 250],
-                  ['data2', 130, 340, 200, 500, 250, 350]
-              ]
-          },
-          axis: {
-              x: {
-                  type: 'timeseries',
-                  tick: {
-                      format: '%Y-%m-%d'
-                  }
-              }
-          },
-            bindto: "#airTempChart"
-      });
 
-      var chart = c3.generate({
-          data: {
-              x: 'x',
-      //        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
-              columns: [
-                  ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
-      //            ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
-                  ['data1', 30, 200, 100, 400, 150, 250],
-                  ['data2', 130, 340, 200, 500, 250, 350]
-              ]
-          },
-          axis: {
-              x: {
-                  type: 'timeseries',
-                  tick: {
-                      format: '%Y-%m-%d'
-                  }
-              }
-          },
-            bindto: "#dewTempChart"
-      });
-
-      var chart = c3.generate({
-          data: {
-              x: 'x',
-      //        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
-              columns: [
-                  ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
-      //            ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
-                  ['data1', 30, 200, 100, 400, 150, 250],
-                  ['data2', 130, 340, 200, 500, 250, 350]
-              ]
-          },
-          axis: {
-              x: {
-                  type: 'timeseries',
-                  tick: {
-                      format: '%Y-%m-%d'
-                  }
-              }
-          },
-            bindto: "#fpcChart"
-      });
-
-      var chart = c3.generate({
-          data: {
-              x: 'x',
-      //        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
-              columns: [
-                  ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
-      //            ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
-                  ['data1', 30, 200, 100, 400, 150, 250],
-                  ['data2', 130, 340, 200, 500, 250, 350]
-              ]
-          },
-          axis: {
-              x: {
-                  type: 'timeseries',
-                  tick: {
-                      format: '%Y-%m-%d'
-                  }
-              }
-          },
-            bindto: "#chlChart"
-      });
-
-      var chart = c3.generate({
-          data: {
-              x: 'x',
-      //        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
-              columns: [
-                  ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
-      //            ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
-                  ['data1', 30, 200, 100, 400, 150, 250],
-                  ['data2', 130, 340, 200, 500, 250, 350]
-              ]
-          },
-          axis: {
-              x: {
-                  type: 'timeseries',
-                  tick: {
-                      format: '%Y-%m-%d'
-                  }
-              }
-          },
-            bindto: "#toxinChart"
-      });
-      var chart = c3.generate({
-          data: {
-              x: 'x',
-      //        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
-              columns: [
-                  ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
-      //            ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
-                  ['data1', 30, 200, 100, 400, 150, 250],
-                  ['data2', 130, 340, 200, 500, 250, 350]
-              ]
-          },
-          axis: {
-              x: {
-                  type: 'timeseries',
-                  tick: {
-                      format: '%Y-%m-%d'
-                  }
-              }
-          },
-            bindto: "#nutChart"
-      });
     });
 
 

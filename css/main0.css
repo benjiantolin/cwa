@@ -98,6 +98,11 @@ html, body, main {
   height: 20vh;
 } */
 
+.c3-line {
+    stroke-width: 4px;
+}
+
+
 .c3 text {
   font-family: 'kievit' 'Font Awesome 5 Free';
   font-size: .9rem;
